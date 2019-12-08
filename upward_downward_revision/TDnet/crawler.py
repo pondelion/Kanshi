@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 import requests
 import pandas as pd
 
@@ -42,15 +43,19 @@ def filter_updown_revison(parsed_data):
 
 if __name__ == '__main__':
     start = datetime(2019, 12, 1)
-    end = datetime(2019, 12, 9)
+    end = datetime(2019, 12, 3)
 
     res = fetch_company_announcements(
         start, end
     )
     parsed_data = parse_tdnet_json_response(res)
+    print(parsed_data)
+    json.dump(
+        parsed_data,
+        open(f'raw_json_{start.strftime("%Y%m%d")}_{end.strftime("%Y%m%d")}', 'w')
+    )
     updown_infos = filter_updown_revison(parsed_data)
     print(updown_infos)
-
     df_updown_infos = pd.DataFrame.from_records(
         updown_infos,
         index=None
@@ -58,6 +63,8 @@ if __name__ == '__main__':
     print(df_updown_infos)
 
     df_updown_infos.to_csv(
-        f'sample_data_{start.strftime("%Y%m%d")}_{end.strftime("%Y%m%d")}_2.csv',
+        f'sample_data_{start.strftime("%Y%m%d")}_{end.strftime("%Y%m%d")}.csv',
         index=None
     )
+
+    print(len(parsed_data))
