@@ -37,7 +37,7 @@ def parse_tdnet_json_response(res_json):
 def filter_updown_revison(parsed_data):
     """業績予想修正の開示情報のみ取り出す
     """
-    return [d['Tdnet'] for d in parsed_data if '業績予想の修正' in d['Tdnet']['title']]
+    return [d['Tdnet'] for d in parsed_data if '業績予想' in d['Tdnet']['title']]
 
 
 if __name__ == '__main__':
@@ -58,5 +58,6 @@ if __name__ == '__main__':
     print(df_updown_infos)
 
     df_updown_infos.to_csv(
-        f'sample_data_{start.strftime("%Y%m%d")}_{end.strftime("%Y%m%d")}.csv'
+        f'sample_data_{start.strftime("%Y%m%d")}_{end.strftime("%Y%m%d")}_2.csv',
+        index=None
     )
